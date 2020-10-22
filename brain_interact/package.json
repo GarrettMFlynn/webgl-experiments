@@ -1,7 +1,7 @@
 {
-  "name": "brain_in_webgl",
+  "name": "brain_interact",
   "version": "1.0.0",
-  "description": "Create a brain in WebGL",
+  "description": "Interact with a brain in WebGL",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",

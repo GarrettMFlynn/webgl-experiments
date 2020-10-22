@@ -14,32 +14,8 @@ async function main() {
         throw new Error('WebGL not supported')
     }
 
-    // Load OBJ File Vertices
-    // const response1 = await fetch('https://raw.githubusercontent.com/GarrettMFlynn/webgl-experiments/main/brain_in_webgl/public/lh.pial.obj');
-    // const text1 = await response1.text();
-    // const data1 = await parseOBJ(text1);
-    // const vertexData1 = data1.position
-    //
-    // const response2 = await fetch('https://raw.githubusercontent.com/GarrettMFlynn/webgl-experiments/main/brain_in_webgl/public/rh.pial.obj');
-    // const text2 = await response2.text();
-    // const data2 = await parseOBJ(text2);
-    // const vertexData2 = data2.position
-
-
-    // // Load Pre-Converted OBJ File Vertices from JSON
-    const response1 = await fetch('https://raw.githubusercontent.com/GarrettMFlynn/webgl-experiments/main/brain_in_webgl/public/lh.pial.json');
-    const json1 = await response1.json();
-    const vertexData1 = json1.position
-
-    const response2 = await fetch('https://raw.githubusercontent.com/GarrettMFlynn/webgl-experiments/main/brain_in_webgl/public/rh.pial.json');
-    const json2 = await response2.json();
-    const vertexData2 = json2.position
-
-    let vertexData = [...vertexData1,...vertexData2]
-
-    // Alternative: Generic Point Clouds (defined in point-functions.js)
-    // const vertexData = createPointCloud(shapes.sphereShell,1e5);
-
+    // Generate Point Clouds (defined in point-functions.js)
+    const vertexData = await createPointCloud('brain',1e5); // or shapes.[shape]
 
 // createbuffer
 // load vertexData into buffer
@@ -47,9 +23,13 @@ async function main() {
     gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertexData), gl.STATIC_DRAW);
 
-// const colorBuffer = gl.createBuffer();
-// gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
-// gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(colorData), gl.STATIC_DRAW);
+    // let forceData = [];
+    // for (let ind = 0; ind < vertexData.length/3; ind++){
+    //     forceData = [...forceData,[0.5,0.5,0.5]]
+    // }
+    // const forceBuffer = gl.createBuffer();
+    // gl.bindBuffer(gl.ARRAY_BUFFER, forceBuffer);
+    // gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(forceData), gl.STATIC_DRAW);
 
 // create vertex shader
     const vertexShader = gl.createShader(gl.VERTEX_SHADER)
@@ -57,13 +37,15 @@ async function main() {
 precision mediump float;
 
 attribute vec3 position;
+
 varying vec3 vColor;
 
 uniform mat4 matrix;
+uniform vec3 force;
 
 void main() {
     vColor = vec3(1,1,1);
-    gl_Position = matrix * vec4(position,1);
+    gl_Position = matrix * vec4((position+force),1);
     gl_PointSize = 1.0;
 }`);
     gl.compileShader(vertexShader);
@@ -75,7 +57,7 @@ precision mediump float;
 varying vec3 vColor;
 
 void main() {
-    gl_FragColor = vec4(vColor,0.2);
+    gl_FragColor = vec4(vColor,1.0);
 }
 `);
     gl.compileShader(fragmentShader);
@@ -99,13 +81,15 @@ void main() {
 // gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer)
 // gl.vertexAttribPointer(colorLocation, 3, gl.FLOAT, false, 0,0);
 
+
 // draw
     gl.useProgram(program);
     gl.enable(gl.DEPTH_TEST);
 
 // matrix code
     const uniformLocations = {
-        matrix: gl.getUniformLocation(program, `matrix`)
+        matrix: gl.getUniformLocation(program, `matrix`),
+        force: gl.getUniformLocation(program, `force`)
     };
 
     const modelMatrix = mat4.create();
@@ -121,21 +105,77 @@ void main() {
     const mvMatrix = mat4.create();
     const mvpMatrix = mat4.create();
 
-    mat4.translate(modelMatrix, modelMatrix, [0, 0, 0]);
-    // mat4.scale( modelMatrix, modelMatrix, [0.25,0.25,0.25]);
-    mat4.rotateX(modelMatrix, modelMatrix, -Math.PI / 2);
-    mat4.rotateZ(modelMatrix, modelMatrix, -Math.PI / 2);
+    // mat4.translate(modelMatrix, modelMatrix, [0, 0, 0]);
+    // mat4.rotateY(modelMatrix, modelMatrix, -Math.PI / 2);
 
+    mat4.rotateX(viewMatrix, viewMatrix, Math.PI / 2);
+    mat4.rotateY(viewMatrix, viewMatrix, Math.PI / 2);
     mat4.translate(viewMatrix, viewMatrix, [0, 0, 200]);
     mat4.invert(viewMatrix, viewMatrix);
 
+
+    // Enable events on mousehold in WebGL
+    let holdStatus;
+    let mouseEv;
+    let moveStatus;
+    let x;
+    let y;
+    let prev_x;
+    let prev_y;
+    let damping = .95;
+    let diff_x = 0;
+    let diff_y = 0;
+    let scroll;
+
+    canvas.onmousedown = function(ev){
+        holdStatus = true;
+        mouseEv = ev;
+        x = ev.clientX;
+        prev_x = x;
+        y = ev.clientY;
+        prev_y = y;
+    };
+
+    canvas.onmouseup = function(ev){
+        holdStatus = false;
+    };
+    canvas.onmousemove = function(ev){
+        mouseEv = ev;
+        moveStatus = true;
+        x = ev.clientX;
+        y = ev.clientY;
+    };
+
+    canvas.onwheel = function(ev){
+        scroll = ev.deltaY;
+        console.log(scroll)
+
+        mat4.translate(viewMatrix, viewMatrix, [scroll/100,0,0]);
+    };
+
+    function mouseState() {
+        if (holdStatus && moveStatus) {
+            diff_x = (x-prev_x);
+            diff_y = (y-prev_y)
+            prev_x = x;
+            prev_y = y;
+            // gl.uniform3fv(uniformLocations.force, new Float32Array([0, 50*x, 50*y]))
+        }
+    }
+
     function animate() {
         requestAnimationFrame(animate)
-        mat4.rotateZ(modelMatrix, modelMatrix, Math.PI / 500);
+        mouseState()
+        mat4.rotateY(modelMatrix, modelMatrix, diff_y*2*Math.PI/canvas.height);
+        mat4.rotateZ(modelMatrix, modelMatrix, diff_x*2*Math.PI/canvas.width);
         mat4.multiply(mvMatrix, viewMatrix, modelMatrix)
         mat4.multiply(mvpMatrix, projectionMatrix, mvMatrix)
         gl.uniformMatrix4fv(uniformLocations.matrix, false, mvpMatrix)
         gl.drawArrays(gl.POINTS, 0, vertexData.length / 3);
+        // gl.uniform3fv(uniformLocations.force, new Float32Array([0,0,0]))
+        moveStatus = false;
+        diff_x *= damping;
+        diff_y *= damping;
     };
 
 
