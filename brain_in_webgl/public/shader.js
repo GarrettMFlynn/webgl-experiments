@@ -12,19 +12,28 @@ async function main() {
         throw new Error('WebGL not supported')
     }
 
-    // Load OBJ File Vertices from JSON
-    const response1 = await fetch('lh.pial.json');
+    // Load OBJ File Vertices
+    // const response1 = await fetch('https://raw.githubusercontent.com/GarrettMFlynn/webgl-experiments/main/brain_in_webgl/public/lh.pial.obj');
+    // const text1 = await response1.text();
+    // const data1 = await parseOBJ(text1);
+    // const vertexData1 = data1.position
+    //
+    // const response2 = await fetch('https://raw.githubusercontent.com/GarrettMFlynn/webgl-experiments/main/brain_in_webgl/public/rh.pial.obj');
+    // const text2 = await response2.text();
+    // const data2 = await parseOBJ(text2);
+    // const vertexData2 = data2.position
+
+
+    // // Load Pre-Converted OBJ File Vertices from JSON
+    const response1 = await fetch('https://raw.githubusercontent.com/GarrettMFlynn/webgl-experiments/main/brain_in_webgl/public/lh.pial.json');
     const json1 = await response1.json();
     const vertexData1 = json1.position
 
-    const response2 = await fetch('rh.pial.json');
+    const response2 = await fetch('https://raw.githubusercontent.com/GarrettMFlynn/webgl-experiments/main/brain_in_webgl/public/rh.pial.json');
     const json2 = await response2.json();
     const vertexData2 = json2.position
 
     let vertexData = [...vertexData1,...vertexData2]
-    // vertexData = vertexData.filter((element, index) => {
-    //     return index % 100 === 0;
-    // })
 
     // Alternative: Generic Point Clouds (defined in point-functions.js)
     // const vertexData = createPointCloud(shapes.sphereShell,1e5);
