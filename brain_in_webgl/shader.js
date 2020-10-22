@@ -13,12 +13,12 @@ async function main() {
     }
 
     // Load OBJ File Vertices
-    const response1 = await fetch('rh.pial.obj');
+    const response1 = await fetch('https://raw.githubusercontent.com/GarrettMFlynn/webgl-experiments/main/brain_in_webgl/lh.pial.obj');
     const text1 = await response1.text();
     const data1 = await parseOBJ(text1);
     const vertexData1 = data1.position
 
-    const response2 = await fetch('lh.pial.obj');
+    const response2 = await fetch('https://raw.githubusercontent.com/GarrettMFlynn/webgl-experiments/main/brain_in_webgl/rh.pial.obj');
     const text2 = await response2.text();
     const data2 = await parseOBJ(text2);
     const vertexData2 = data2.position

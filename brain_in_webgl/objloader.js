@@ -18,15 +18,6 @@ function parseOBJ(text) {
         [],   // normals
     ];
 
-    function newGeometry() {
-        // If there is an existing geometry and it's
-        // not empty then start a new one.
-        if (geometry && geometry.data.position.length) {
-            geometry = undefined;
-        }
-        setGeometry();
-    }
-
     function addVertex(vert) {
         const ptn = vert.split('/');
         ptn.forEach((objIndexStr, i) => {
