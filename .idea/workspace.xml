@@ -1,7 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="bf494eb6-7a89-4d94-86bb-949ce7c32c88" name="Default Changelist" comment="" />
+    <list default="true" id="bf494eb6-7a89-4d94-86bb-949ce7c32c88" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lh.pial.obj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/objloader.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/point-functions.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/rh.pial.obj" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/shader.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/style.css" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -15,6 +24,9 @@
         <option value="CSS File" />
       </list>
     </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1jEQlcna6WY2KznySsKDhlXho2g" />
   <component name="ProjectViewState">
@@ -47,7 +59,8 @@
       <updated>1603366923680</updated>
       <workItem from="1603366926178" duration="1884000" />
       <workItem from="1603370692918" duration="2117000" />
-      <workItem from="1603374881551" duration="8401000" />
+      <workItem from="1603374881551" duration="8623000" />
+      <workItem from="1603386246155" duration="42000" />
     </task>
     <servers />
   </component>
