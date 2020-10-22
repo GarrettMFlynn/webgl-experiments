@@ -1,4 +1,7 @@
-// Uses Brain for Blender from https://brainder.org/research/brain-for-blender/
+// The models in this code are by Anderson Winkler and are
+// licensed under a Creative Commons Attribution-ShareAlike 3.0
+// Unported License. The original work can be found at
+// https://brainder.org/brain-for-blender.
 
 async function main() {
 
