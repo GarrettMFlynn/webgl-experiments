@@ -229,6 +229,8 @@ void main() {
     let scroll;
     let t = 0;
     let diff = [];
+    let timeFlag = false;
+    let tIter = 1;
 
     canvas.onmousedown = function(ev){
         holdStatus = true;
@@ -257,9 +259,11 @@ void main() {
     document.onkeydown = function(ev){
         if (key_events.includes(ev.keyCode)){
             if (ev.keyCode == '38') {
-                // console.log('up arrow')
+                timeFlag = true;
+                t = 0;
+                tIter = 1;
             } else if (ev.keyCode == '40') {
-                // console.log('down arrow')
+                tIter =+ damping*(-t);
             } else if (ev.keyCode == '37') {
                 if (shape > 0) {
                     shape -= 1
@@ -315,15 +319,20 @@ void main() {
         mat4.multiply(mvMatrix, viewMatrix, modelMatrix)
         mat4.multiply(mvpMatrix, projectionMatrix, mvMatrix)
         gl.uniformMatrix4fv(uniformLocations.matrix, false, mvpMatrix)
-        gl.uniform1f(uniformLocations.noiseCoeff,0); //t/10);
+        gl.uniform1f(uniformLocations.noiseCoeff,t/10);
         gl.uniform1f(uniformLocations.time, t/1000);
         moveStatus = false;
         diff_x *= (1-damping);
         diff_y *= (1-damping);
-        t += 1;
+        if (timeFlag) {
+            if (Math.sign(tIter) == -1){
+                tIter =+ damping*(-t)
+            }
+            if (t >= 0){
+                t += tIter;
+            }
+        }
     };
-
-
     animate()
 }
 
