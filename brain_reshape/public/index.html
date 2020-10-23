@@ -1,4 +1,35 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>-->
+<!--<html>-->
+<!--<head>-->
+<!--    <meta charset="utf-8" />-->
+<!--    <meta http-equiv="X-UA-Compatible" content="IE=edge">-->
+<!--    <title>Brain in WebGL</title>-->
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1">-->
+<!--    <link rel="stylesheet" type="text/css" media="screen" href="style.css" />-->
+
+<!--    <script src="gl-matrix-min.js" defer></script>-->
+<!--    <script src="point-functions.js" defer></script>-->
+<!--    <script src="objloader.js" defer></script>-->
+
+<!--    <script src="shader.js" defer></script>-->
+<!--</head>-->
+<!--&lt;!&ndash;<body>&ndash;&gt;-->
+<!--<div id="container">-->
+<!--<div id="Instructions">-->
+<!--    <p>Press Arrow Keys to Switch Visualization.</p>-->
+<!--    <p>Drag to rotate.</p>-->
+<!--    <p>Scroll to scale.</p>-->
+<!--</div>-->
+<!--<canvas></canvas>-->
+<!--</div>-->
+<!--<script>-->
+<!--    const _c = document.getElementsByTagName('canvas')[0];-->
+<!--    _c.width = window.innerWidth;-->
+<!--    _c.height = window.innerHeight;-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->
+
 <html>
 <head>
     <meta charset="utf-8" />
@@ -14,7 +45,15 @@
     <script src="shader.js" defer></script>
 </head>
 <body>
-<canvas></canvas>
+<div id="container">
+    <div id="overlay">
+        <p>Arrow Keys —> Switch State</p>
+        <p>Drag Mouse —> Rotate</p>
+        <p>Scroll Mouse —> Scale</p>
+    </div>
+    <canvas></canvas>
+</div>
+
 <script>
     const _c = document.getElementsByTagName('canvas')[0];
     _c.width = window.innerWidth;
