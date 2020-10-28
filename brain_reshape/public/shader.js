@@ -23,8 +23,8 @@ async function main() {
     let damping = .2;
 
 
-    temp = await createPointCloud('brain'); // or shapes.[shape]
-    const brainVertices = await reducePointCount(temp,resolution)
+    const brainVertices = await createPointCloud('brain'); // or shapes.[shape]
+    // const brainVertices = await reducePointCount(temp,resolution)
 
     // Generate Point Clouds (defined in point-functions.js)
     if (shape_array[shape] != 'brain') {
